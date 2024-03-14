@@ -1,5 +1,14 @@
 
-var apimodule = apimock;
+var useApiClient = false;
+
+var apimodule; // Variable global para almacenar el módulo seleccionado
+
+// Condición para cargar el módulo adecuado
+if (useApiClient) {
+    apimodule = apiclient;
+} else {
+    apimodule = apimock;
+}
 
 var app = (function (){
     var author;
@@ -18,9 +27,6 @@ var app = (function (){
             apimodule.getBlueprintsByAuthor(author,authorData);
         }
     }
-
-
-
     // utiliza el método map() para tomar una lista de blueprints y transformar cada elemento 
     // de la lista en un nuevo objeto que contiene solo el nombre y la cantidad de puntos asociados a ese bluePrint.
     var authorData = function( data) {
@@ -59,33 +65,33 @@ var app = (function (){
     
 
     //  función que se encarga de recoger información sobre el autor y el nombre del blueprint seleccionado
-    // function getBlueprintByAuthorAndName(data) {
-    //     author = $("#author").val();
-    //     blueprintName = data.id;
-    //     $("#nameblu").text("Current blueprint: " + blueprintName);
-    //     apimodule.getBlueprintsByNameAndAuthor(author, blueprintName, printPoints);
-    // }
+    function getBlueprintByAuthorAndName(data) {
+        author = $("#author").val();
+        blueprintName = data.id;
+        $("#nameblu").text("Current blueprint: " + blueprintName);
+        apimodule.getBlueprintsByNameAndAuthor(author, blueprintName, printPoints);
+    }
 
-    // function printPoints(data) {
-    //     const puntos = data.points;
-    //     var c = document.getElementById("canvas");
-    //     var ctx = c.getContext("2d");
-    //     ctx.clearRect(0, 0, c.width, c.height);
-    //     ctx.restore();
-    //     ctx.beginPath();
-    //     for (let i = 1; i < puntos.length; i++) {
-    //         ctx.moveTo(puntos[i - 1].x, puntos[i - 1].y);
-    //         ctx.lineTo(puntos[i].x, puntos[i].y);
-    //         if (i === puntos.length - 1) {
-    //             ctx.moveTo(puntos[i].x, puntos[i].y);
-    //             ctx.lineTo(puntos[0].x, puntos[0].y);
-    //         }
-    //     }
-    //     ctx.stroke();
-    // }
+    function printPoints(data) {
+        const puntos = data.points;
+        var c = document.getElementById("canvas");
+        var ctx = c.getContext("2d");
+        ctx.clearRect(0, 0, c.width, c.height);
+        ctx.restore();
+        ctx.beginPath();
+        for (let i = 1; i < puntos.length; i++) {
+            ctx.moveTo(puntos[i - 1].x, puntos[i - 1].y);
+            ctx.lineTo(puntos[i].x, puntos[i].y);
+            if (i === puntos.length - 1) {
+                ctx.moveTo(puntos[i].x, puntos[i].y);
+                ctx.lineTo(puntos[0].x, puntos[0].y);
+            }
+        }
+        ctx.stroke();
+    }
 
     return{
-        // getBlueprintByAuthorAndName:getBlueprintByAuthorAndName,
+        getBlueprintByAuthorAndName:getBlueprintByAuthorAndName,
         getNameAuthorBlueprints: getNameAuthorBlueprints
     }
 })();
